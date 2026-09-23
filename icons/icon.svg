@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5E3C"/>
+      <stop offset="50%" stop-color="#734A29"/>
+      <stop offset="100%" stop-color="#4A2E1B"/>
+    </linearGradient>
+    <linearGradient id="yarn-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7C59F"/>
+      <stop offset="50%" stop-color="#E88873"/>
+      <stop offset="100%" stop-color="#C25953"/>
+    </linearGradient>
+    <linearGradient id="yarn-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2D4C0"/>
+      <stop offset="100%" stop-color="#C2B299"/>
+    </linearGradient>
+    <linearGradient id="hook-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4D06F"/>
+      <stop offset="100%" stop-color="#D49B28"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded app icon frame -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)"/>
+
+  <!-- Subtle knit pattern background overlay -->
+  <g opacity="0.08" stroke="#FFFFFF" stroke-width="4" fill="none">
+    <path d="M40,80 Q80,120 120,80 Q160,120 200,80 Q240,120 280,80 Q320,120 360,80 Q400,120 440,80 Q480,120 520,80"/>
+    <path d="M40,140 Q80,180 120,140 Q160,180 200,140 Q240,180 280,140 Q320,180 360,140 Q400,180 440,140 Q480,180 520,140"/>
+    <path d="M40,400 Q80,440 120,400 Q160,440 200,400 Q240,440 280,400 Q320,440 360,400 Q400,440 440,400 Q480,440 520,400"/>
+  </g>
+
+  <!-- Crochet Hook (angled diagonally behind or through yarn ball) -->
+  <g filter="url(#shadow)" transform="rotate(-35 256 256)">
+    <!-- Hook shaft -->
+    <rect x="238" y="40" width="36" height="420" rx="18" fill="url(#hook-grad)"/>
+    <!-- Hook throat & lip -->
+    <path d="M238,58 C238,32 260,20 274,32 C286,42 278,54 266,54 C256,54 250,62 250,75 L250,110 L238,110 Z" fill="#E2A632"/>
+    <!-- Grip indent indicator -->
+    <rect x="246" y="270" width="20" height="70" rx="10" fill="#B5811A" opacity="0.6"/>
+    <!-- Hook size text imprint -->
+    <text x="256" y="315" fill="#FFE8A3" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(90 256 315)">4.00mm</text>
+  </g>
+
+  <!-- Big Yarn Ball with curves & depth -->
+  <g filter="url(#shadow)">
+    <!-- Base ball circle -->
+    <circle cx="256" cy="275" r="145" fill="url(#yarn-grad)"/>
+
+    <!-- Yarn wound strand curves -->
+    <g fill="none" stroke="#FFFFFF" stroke-linecap="round" opacity="0.45">
+      <path d="M150,220 C180,170 320,170 360,230" stroke-width="14"/>
+      <path d="M130,270 C160,210 340,210 380,275" stroke-width="16"/>
+      <path d="M140,320 C180,260 340,260 370,325" stroke-width="14"/>
+      <path d="M165,365 C205,320 310,320 345,370" stroke-width="12"/>
+    </g>
+
+    <!-- Transverse wrapped strands -->
+    <g fill="none" stroke="#FFF0E6" stroke-linecap="round" opacity="0.55">
+      <path d="M200,150 C240,200 240,350 190,400" stroke-width="14"/>
+      <path d="M256,135 C290,195 290,355 245,415" stroke-width="16"/>
+      <path d="M310,155 C345,215 345,345 305,395" stroke-width="14"/>
+    </g>
+
+    <!-- Warm highlight curve on top-left -->
+    <path d="M160,180 C200,150 280,150 325,180" fill="none" stroke="#FFE9DC" stroke-width="10" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Cute little loose yarn tail threading out -->
+    <path d="M360,340 C410,360 430,420 400,450 C375,475 330,460 340,430 C345,415 365,410 380,425" fill="none" stroke="#F7C59F" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <!-- Little Sparkle / Star for handmade magic -->
+  <g fill="#FFF5EB" opacity="0.9">
+    <path d="M120,110 Q120,135 95,135 Q120,135 120,160 Q120,135 145,135 Q120,135 120,110 Z"/>
+    <path d="M410,100 Q410,120 390,120 Q410,120 410,140 Q410,120 430,120 Q410,120 410,100 Z" opacity="0.75"/>
+  </g>
+</svg>

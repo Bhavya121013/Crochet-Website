@@ -1,0 +1,49 @@
+{
+  "name": "StitchCraft — Crochet Pricing & Studio",
+  "short_name": "StitchCraft",
+  "description": "Calculate fair handmade crochet prices, track multi-yarn costs, labor, and export client quotes. The essential solution for every crocheteer.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAF6F0",
+  "theme_color": "#734A29",
+  "lang": "en",
+  "categories": ["lifestyle", "business", "utilities", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Calculation",
+      "short_name": "Calculate",
+      "description": "Calculate price for a new crochet project",
+      "url": "./index.html#calculator",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Saved Projects",
+      "short_name": "Saved",
+      "description": "View saved projects and quotes",
+      "url": "./index.html#saved",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

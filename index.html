@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>StitchCraft — Crochet Studio & Fair-Price Calculator</title>
+  
+  <!-- SEO & Social Metadata -->
+  <meta name="description" content="Calculate accurate handmade crochet prices, track multi-yarn skeins, materials, time, and generate client quotes. Never undercharge for your craft again.">
+  <meta name="keywords" content="crochet price calculator, crochet pricing, amigurumi cost, craft pricing formula, yarn calculator, crochet business, etsy crochet pricing">
+  <meta name="author" content="Bhavya Agarwal">
+  
+  <!-- OpenGraph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="StitchCraft — Crochet Studio & Fair-Price Calculator">
+  <meta property="og:description" content="The solution to the #1 problem every crocheteer faces: fair pricing for handmade art.">
+  <meta property="og:image" content="icons/icon-512.png">
+
+  <!-- PWA & Mobile Capabilities -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#734A29">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StitchCraft">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Modern Artisan Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="light">
+
+  <!-- Android & Mobile App Install Banner (PWA) -->
+  <div id="pwaBanner" class="pwa-banner hidden" role="alert">
+    <div class="pwa-banner-content">
+      <div class="pwa-icon-wrap">
+        <img src="icons/icon-192.png" alt="StitchCraft App Icon" width="44" height="44">
+      </div>
+      <div class="pwa-text">
+        <strong id="pwaBannerTitle">Install StitchCraft App</strong>
+        <p id="pwaBannerDesc">Tap below to add to your Android home screen for instant offline pricing at craft fairs!</p>
+      </div>
+    </div>
+    <div class="pwa-actions">
+      <button id="pwaInstallBtn" class="btn-primary btn-sm" aria-label="Install App">📲 Install App</button>
+      <button id="pwaDismissBtn" class="btn-ghost btn-sm" aria-label="Dismiss banner">✕</button>
+    </div>
+  </div>
+
+  <!-- Android Native Install Modal (Automatic popup for Android visitors) -->
+  <div id="androidModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="androidModalTitle">
+    <div class="modal-card modal-android">
+      <button class="modal-close" id="androidModalClose" aria-label="Close modal">✕</button>
+      <div class="android-modal-hero">
+        <div class="app-avatar">
+          <img src="icons/icon-192.png" alt="StitchCraft Logo" width="76" height="76">
+        </div>
+        <div class="badge-android">✨ Android & Mobile Ready</div>
+        <h2 id="androidModalTitle">Get the StitchCraft App</h2>
+        <p>Never undercharge your crochet work again. Install on your Android phone for 1-click access, instant offline calculations, and full craft studio tools.</p>
+      </div>
+
+      <div class="android-feature-list">
+        <div class="feat-item">
+          <span class="feat-icon">⚡</span>
+          <div>
+            <strong>100% Offline Support</strong>
+            <span>Calculate quotes at craft fairs & pop-ups without Wi-Fi</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🧶</span>
+          <div>
+            <strong>Multi-Yarn & Stash Calculator</strong>
+            <span>Track every single gram and color accurately</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🧾</span>
+          <div>
+            <strong>Instant Client Quote Cards</strong>
+            <span>Generate and copy pricing directly for WhatsApp & Instagram DMs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="android-install-guide hidden" id="manualInstallInstructions">
+        <div class="guide-box">
+          <strong>How to install on Android Chrome:</strong>
+          <ol>
+            <li>Tap the browser menu (<strong>⋮</strong> three dots at top-right).</li>
+            <li>Select <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.</li>
+            <li>Launch StitchCraft directly from your home screen like any native app!</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="modal-footer-actions">
+        <button id="androidInstallActionBtn" class="btn-primary btn-block">
+          📲 Install to Android Now
+        </button>
+        <button id="androidContinueWebBtn" class="btn-outline btn-block">
+          Continue in Web Browser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top App Navigation Bar -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a href="#calculator" class="brand-link" aria-label="StitchCraft Home">
+          <div class="brand-icon">
+            <svg viewBox="0 0 512 512" width="34" height="34">
+              <circle cx="256" cy="256" r="230" fill="#734A29"/>
+              <circle cx="256" cy="275" r="145" fill="#E88873"/>
+              <path d="M150,220 C180,170 320,170 360,230" stroke="#FFF" stroke-width="14" fill="none" opacity="0.6"/>
+              <path d="M130,270 C160,210 340,210 380,275" stroke="#FFF" stroke-width="16" fill="none" opacity="0.6"/>
+              <rect x="238" y="50" width="36" height="410" rx="18" fill="#F4D06F" transform="rotate(-35 256 256)"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">StitchCraft</span>
+            <span class="brand-tagline">Crochet Pricing & Studio</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" aria-label="Main Navigation">
+        <button class="nav-tab active" data-tab="calculator" id="tabCalculatorBtn">
+          <span class="nav-tab-icon">🧶</span>
+          <span>Calculator</span>
+        </button>
+        <button class="nav-tab" data-tab="saved" id="tabSavedBtn">
+          <span class="nav-tab-icon">📁</span>
+          <span>Saved Projects (<span id="savedCountBadge">0</span>)</span>
+        </button>
+        <button class="nav-tab" data-tab="tools" id="tabToolsBtn">
+          <span class="nav-tab-icon">📐</span>
+          <span>Hook & Yarn Guide</span>
+        </button>
+      </nav>
+
+      <!-- Utility Controls -->
+      <div class="header-actions">
+        <!-- Currency Selector -->
+        <div class="select-currency-wrapper">
+          <label for="currencySelect" class="sr-only">Currency</label>
+          <select id="currencySelect" class="select-currency" aria-label="Choose currency">
+            <option value="₹" selected>₹ INR</option>
+            <option value="$">$ USD</option>
+            <option value="€">€ EUR</option>
+            <option value="£">£ GBP</option>
+            <option value="C$">C$ CAD</option>
+            <option value="A$">A$ AUD</option>
+          </select>
+        </div>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Toggle cozy dark mode" title="Cozy Twilight Mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+
+        <!-- Install Button in Header -->
+        <button id="headerInstallBtn" class="btn-install-header" aria-label="Install App" title="Install on Android or Desktop">
+          <span>📲</span> <span class="hide-mobile">Install App</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Craft Mission Banner -->
+  <section class="mission-bar">
+    <div class="container">
+      <div class="mission-content">
+        <span class="mission-badge">🧶 The Crocheteer's Guarantee</span>
+        <p><strong>Stop selling yourself short.</strong> Every stitch takes skill, time, and love. Calculate fair prices that actually cover your materials, pay your worth, and turn your craft into a thriving business.</p>
+      </div>
+      <!-- Quick Presets -->
+      <div class="presets-container">
+        <span class="presets-label">⚡ Quick Presets:</span>
+        <div class="presets-scroll" id="presetsBar">
+          <button class="preset-chip" data-preset="amigurumi">🧸 Amigurumi Plushie</button>
+          <button class="preset-chip" data-preset="cardigan">🌸 Granny Square Cardigan</button>
+          <button class="preset-chip" data-preset="totebag">👜 Market Tote Bag</button>
+          <button class="preset-chip" data-preset="buckethat">🧶 Cozy Bucket Hat</button>
+          <button class="preset-chip" data-preset="coaster">☕ Mug Rug / Coaster</button>
+          <button class="preset-chip" data-preset="scrunchie">🎀 Velvet Scrunchie</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container main-content">
+
+    <!-- TAB 1: CALCULATOR WORKSPACE -->
+    <div id="tab-calculator" class="tab-pane active">
+      <div class="studio-layout">
+
+        <!-- LEFT WORKSPACE: INPUT CARDS -->
+        <div class="studio-inputs">
+
+          <!-- PROJECT BASIC DETAILS -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <span class="card-num">1</span>
+              <div>
+                <h2>Project Information</h2>
+                <p class="card-sub">Give your handmade creation an identity</p>
+              </div>
+            </div>
+
+            <div class="input-grid-2">
+              <div class="input-group">
+                <label for="projectName">Project / Item Name</label>
+                <input type="text" id="projectName" placeholder="e.g. Cozy Strawberry Frog Plushie" value="Handmade Crochet Creation">
+              </div>
+              <div class="input-group">
+                <label for="clientName">Client / Order Ref (Optional)</label>
+                <input type="text" id="clientName" placeholder="e.g. Maya S. (Instagram DM)">
+              </div>
+            </div>
+          </div>
+
+          <!-- YARN CALCULATOR (MULTI-YARN SUPPORT) -->
+          <div class="card glass-card">
+            <div class="card-header space-between">
+              <div class="flex-align">
+                <span class="card-num">2</span>
+                <div>
+                  <h2>Yarn Used</h2>
+                  <p class="card-sub">Add all yarn colors and skein weights used</p>
+                </div>
+              </div>
+              <button id="addYarnBtn" class="btn-secondary btn-sm" aria-label="Add another yarn color">
+                + Add Another Yarn
+              </button>
+            </div>
+
+            <!-- Container for dynamic yarn rows -->
+            <div id="yarnList" class="yarn-items-container">
+              <!-- Default Initial Yarn Row -->
+              <div class="yarn-card" data-yarn-id="1">
+                <div class="yarn-card-header">
+                  <span class="yarn-title-badge">🧶 Yarn #1 (Primary)</span>
+                  <button class="btn-remove-yarn hidden" title="Remove this yarn" aria-label="Remove yarn">✕</button>
+                </div>
+                <div class="input-grid-4">
+                  <div class="input-group">
+                    <label>Yarn Color / Brand</label>
+                    <input type="text" class="yarn-name" placeholder="e.g. Sage Cotton" value="Main Yarn">
+                  </div>
+                  <div class="input-group">
+                    <label>Yarn Used (grams)</label>
+                    <input type="number" class="yarn-used" min="0" step="1" placeholder="80" value="80">
+                  </div>
+                  <div class="input-group">
+                    <label>Full Skein Weight (g)</label>
+                    <input type="number" class="yarn-weight" min="1" step="1" placeholder="100" value="100">
+                  </div>
+                  <div class="input-group">
+                    <label>Skein Price (<span class="currency-symbol">₹</span>)</label>
+                    <input type="number" class="yarn-price" min="0" step="0.5" placeholder="250" value="250">
+                  </div>
+                </div>
+                <div class="yarn-subtotal-bar">
+                  <span>Yarn #1 Estimated Cost:</span>
+                  <strong class="yarn-cost-display"><span class="currency-symbol">₹</span>200.00</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="yarn-summary-pill">
+              <span>Total Yarn Weight: <strong id="totalGramsDisplay">80g</strong></span>
+              <span>Total Yarn Cost: <strong id="totalYarnCostDisplay">₹200.00</strong></span>
+            </div>
+          </div>
+
+          <!-- NOTIONS & MATERIALS -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <span class="card-num">3</span>
+              <div>
+                <h2>Notions & Hardware</h2>
+                <p class="card-sub">Safety eyes, stuffing, buttons, tags, keychains, etc.</p>
+              </div>
+            </div>
+
+            <div class="quick-notions-grid">
+              <div class="notion-item">
+                <label>🧸 Polyfill Stuffing (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="notionStuffing" min="0" step="1" placeholder="0" value="25">
+              </div>
+              <div class="notion-item">
+                <label>👀 Safety Eyes / Nose (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="notionEyes" min="0" step="1" placeholder="0" value="15">
+              </div>
+              <div class="notion-item">
+                <label>🔑 Keychain / Clasps (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="notionKeychain" min="0" step="1" placeholder="0" value="0">
+              </div>
+              <div class="notion-item">
+                <label>✨ Other Materials (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="notionOther" min="0" step="1" placeholder="0" value="0">
+              </div>
+            </div>
+          </div>
+
+          <!-- LABOR TIME & FAIR HOURLY WAGE -->
+          <div class="card glass-card highlight-labor">
+            <div class="card-header">
+              <span class="card-num">4</span>
+              <div>
+                <h2>Making Time & Fair Artisan Wage</h2>
+                <p class="card-sub">Your craft skill deserves fair compensation. Never work for free!</p>
+              </div>
+            </div>
+
+            <div class="input-grid-2">
+              <div class="input-group">
+                <label>Making Time</label>
+                <div class="time-inputs-cluster">
+                  <div class="time-field">
+                    <input type="number" id="hoursInput" min="0" placeholder="0" value="2">
+                    <span class="time-unit">Hours</span>
+                  </div>
+                  <div class="time-field">
+                    <input type="number" id="minutesInput" min="0" max="59" placeholder="0" value="30">
+                    <span class="time-unit">Mins</span>
+                  </div>
+                </div>
+                <!-- Quick Time Adjusters -->
+                <div class="quick-steppers">
+                  <span class="stepper-label">Quick add:</span>
+                  <button type="button" class="btn-stepper" data-add-min="15">+15m</button>
+                  <button type="button" class="btn-stepper" data-add-min="30">+30m</button>
+                  <button type="button" class="btn-stepper" data-add-min="60">+1h</button>
+                  <button type="button" class="btn-stepper btn-stepper-reset" id="resetTimeBtn">Reset</button>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label for="hourlyRate">Your Hourly Rate (<span class="currency-symbol">₹</span>/hr)</label>
+                <input type="number" id="hourlyRate" min="0" step="5" placeholder="100" value="120">
+                <div class="wage-presets" id="wagePresetsCluster">
+                  <span class="stepper-label">Suggestions:</span>
+                  <button type="button" class="wage-chip" data-rate="100">₹100</button>
+                  <button type="button" class="wage-chip" data-rate="150">₹150</button>
+                  <button type="button" class="wage-chip" data-rate="250">₹250</button>
+                  <button type="button" class="wage-chip" data-rate="400">₹400</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="labor-total-pill">
+              <span>Total Labor Time: <strong id="totalTimeFormatted">2 hrs 30 mins</strong></span>
+              <span>Labor Compensation: <strong id="laborSubtotalDisplay">₹300.00</strong></span>
+            </div>
+          </div>
+
+          <!-- OVERHEADS, PACKAGING & PLATFORM FEES -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <span class="card-num">5</span>
+              <div>
+                <h2>Packaging, Studio & Platform Fees</h2>
+                <p class="card-sub">Boxes, thank-you cards, hooks, electricity & marketplace cuts</p>
+              </div>
+            </div>
+
+            <div class="input-grid-3">
+              <div class="input-group">
+                <label for="packagingCost">Packaging Cost (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="packagingCost" min="0" step="1" placeholder="20" value="30">
+                <span class="field-hint">Box, ribbon, care card</span>
+              </div>
+              <div class="input-group">
+                <label for="overheadCost">Studio Overhead (<span class="currency-symbol">₹</span>)</label>
+                <input type="number" id="overheadCost" min="0" step="1" placeholder="10" value="15">
+                <span class="field-hint">Pattern, tools, studio lights</span>
+              </div>
+              <div class="input-group">
+                <label for="platformFee">Platform Fee % (Etsy/Shopify)</label>
+                <input type="number" id="platformFee" min="0" max="50" step="0.5" placeholder="0" value="0">
+                <span class="field-hint">e.g. 6.5% for Etsy, 0% direct</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROFIT MARGIN & PRICING STRATEGY -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <span class="card-num">6</span>
+              <div>
+                <h2>Profit Margin & Craft Strategy</h2>
+                <p class="card-sub">Profit is the reinvestment fuel that keeps your crochet business alive</p>
+              </div>
+            </div>
+
+            <div class="profit-controls">
+              <div class="slider-header">
+                <label for="profitRange">Desired Profit Margin: <strong id="profitPercentVal">30%</strong></label>
+                <input type="number" id="profitInput" min="0" max="200" step="1" value="30" class="profit-number-input">
+              </div>
+              <input type="range" id="profitRange" min="0" max="100" value="30" class="profit-slider">
+              
+              <div class="profit-presets">
+                <button type="button" class="preset-profit-chip" data-profit="15">15% (Modest)</button>
+                <button type="button" class="preset-profit-chip active" data-profit="30">30% (Recommended)</button>
+                <button type="button" class="preset-profit-chip" data-profit="50">50% (Thriving)</button>
+                <button type="button" class="preset-profit-chip" data-profit="100">100% (High-End)</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT WORKSPACE: LIVE FINANCIAL INTELLIGENCE CARD -->
+        <div class="studio-summary">
+          <div class="summary-sticky-card glass-card-premium">
+            <div class="summary-top">
+              <div class="live-indicator">
+                <span class="pulse-dot"></span> LIVE CALCULATION
+              </div>
+              <span class="project-tag" id="summaryProjectBadge">Mushroom Frog Plushie</span>
+            </div>
+
+            <!-- PRIMARY ESTIMATED SELLING PRICE -->
+            <div class="hero-price-box">
+              <span class="hero-label">Recommended Retail Price</span>
+              <div class="hero-price-number" id="finalSellingPriceDisplay">
+                <span class="currency-symbol">₹</span>754.00
+              </div>
+              <div class="hero-price-sub" id="profitSummaryNote">Includes ₹174.00 business profit</div>
+            </div>
+
+            <!-- DUAL STRATEGY: WHOLESALE VS RETAIL COMPARISON -->
+            <div class="dual-pricing-grid">
+              <div class="dual-card">
+                <span class="dual-title">Wholesale Price</span>
+                <strong class="dual-val" id="wholesalePriceDisplay">₹820.00</strong>
+                <span class="dual-sub">(Cost × 1.5)</span>
+              </div>
+              <div class="dual-card dual-retail">
+                <span class="dual-title">Golden Craft Retail</span>
+                <strong class="dual-val" id="goldenRetailPriceDisplay">₹1,160.00</strong>
+                <span class="dual-sub">(Wholesale × 2 or Cost × 2.2)</span>
+              </div>
+            </div>
+
+            <!-- FINANCIAL TAKEAWAY STATS -->
+            <div class="quick-stats-row">
+              <div class="q-stat">
+                <span class="q-label">Total Out-of-Pocket Cost</span>
+                <strong class="q-val" id="totalCostDisplay">₹580.00</strong>
+              </div>
+              <div class="q-stat">
+                <span class="q-label">Your Effective Earnings</span>
+                <strong class="q-val text-accent" id="totalEarningsDisplay">₹474.00</strong>
+              </div>
+            </div>
+
+            <!-- PROPORTION BAR CHART -->
+            <div class="breakdown-chart-wrap">
+              <div class="chart-header">
+                <span>Cost Breakdown</span>
+                <span id="chartHoursSummary">2h 30m labor</span>
+              </div>
+              <div class="stacked-bar" id="costStackedBar">
+                <div class="bar-slice bar-yarn" style="width: 34%;" title="Yarn Cost"></div>
+                <div class="bar-slice bar-notions" style="width: 7%;" title="Notions & Materials"></div>
+                <div class="bar-slice bar-labor" style="width: 52%;" title="Labor"></div>
+                <div class="bar-slice bar-overheads" style="width: 7%;" title="Overheads & Packaging"></div>
+              </div>
+              <div class="chart-legend">
+                <span class="leg-item"><span class="dot dot-yarn"></span> Yarn: <strong id="legYarn">₹200</strong></span>
+                <span class="leg-item"><span class="dot dot-notions"></span> Notions: <strong id="legNotions">₹40</strong></span>
+                <span class="leg-item"><span class="dot dot-labor"></span> Labor: <strong id="legLabor">₹300</strong></span>
+                <span class="leg-item"><span class="dot dot-overheads"></span> Overheads: <strong id="legOverhead">₹40</strong></span>
+                <span class="leg-item"><span class="dot dot-profit"></span> Profit: <strong id="legProfit">₹174</strong></span>
+              </div>
+            </div>
+
+            <!-- ITEM SUMMARY LIST -->
+            <div class="summary-line-items">
+              <div class="s-line">
+                <span>🧶 Yarn Cost (<span id="summaryGrams">80g</span>)</span>
+                <span id="lineYarn">₹200.00</span>
+              </div>
+              <div class="s-line">
+                <span>🧸 Notions & Materials</span>
+                <span id="lineNotions">₹40.00</span>
+              </div>
+              <div class="s-line">
+                <span>⏱️ Labor (<span id="lineLaborHours">2.5h</span> @ <span id="lineWage">₹120</span>)</span>
+                <span id="lineLabor">₹300.00</span>
+              </div>
+              <div class="s-line">
+                <span>📦 Packaging & Overheads</span>
+                <span id="lineOverheads">₹45.00</span>
+              </div>
+              <div class="s-line s-line-fee" id="lineFeeRow">
+                <span>🛒 Platform Fee Buffer</span>
+                <span id="lineFee">₹0.00</span>
+              </div>
+              <div class="s-line s-total">
+                <span>Total Production Cost</span>
+                <span id="lineTotalCost">₹585.00</span>
+              </div>
+              <div class="s-line s-profit">
+                <span>Business Profit Margin (<span id="lineProfitPct">30%</span>)</span>
+                <span id="lineProfit">₹175.50</span>
+              </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons-stack">
+              <button id="saveProjectBtn" class="btn-primary btn-block">
+                💾 Save Project to Collection
+              </button>
+              <div class="btn-group-2">
+                <button id="openQuoteModalBtn" class="btn-outline">
+                  🧾 Generate Quote Card
+                </button>
+                <button id="copySummaryBtn" class="btn-secondary">
+                  📋 Copy Summary
+                </button>
+              </div>
+              <button id="resetAllBtn" class="btn-ghost btn-sm btn-block">
+                🔄 Reset Form
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: SAVED PROJECTS & ORDERS -->
+    <div id="tab-saved" class="tab-pane">
+      <div class="saved-pane-header">
+        <div>
+          <h2>Your Saved Crochet Projects</h2>
+          <p>Re-open past quotes, check profit history, or tweak pricing anytime.</p>
+        </div>
+        <button id="exportAllJsonBtn" class="btn-outline btn-sm">Export Data (JSON)</button>
+      </div>
+
+      <div id="savedProjectsGrid" class="saved-grid">
+        <!-- Rendered dynamically by app.js -->
+        <div class="empty-state">
+          <div class="empty-icon">🧶</div>
+          <h3>No projects saved yet</h3>
+          <p>Calculate a price and tap "Save Project" to keep your project quotes organized here.</p>
+          <button class="btn-primary btn-sm" onclick="switchTab('calculator')">Create First Calculation</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: CROCHET TOOLS & CHEAT SHEET -->
+    <div id="tab-tools" class="tab-pane">
+      <div class="tools-pane-header">
+        <h2>Crochet Artisan Reference Guide</h2>
+        <p>Essential hook size conversions, yarn weight standards, and yardage estimation.</p>
+      </div>
+
+      <div class="tools-grid">
+        <!-- Hook Conversion Table -->
+        <div class="card glass-card">
+          <h3>🪝 Hook Size Conversion Chart</h3>
+          <div class="table-responsive">
+            <table class="reference-table">
+              <thead>
+                <tr>
+                  <th>Metric (mm)</th>
+                  <th>US Letter</th>
+                  <th>UK / Canadian</th>
+                  <th>Typical Yarn Pairing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2.25 mm</td><td>B-1</td><td>13</td><td>Lace / Fingering (Amigurumi tight)</td></tr>
+                <tr><td>2.75 mm</td><td>C-2</td><td>12</td><td>Fingering / Sport</td></tr>
+                <tr><td>3.25 mm</td><td>D-3</td><td>10</td><td>Sport / Light DK</td></tr>
+                <tr><td>3.50 mm</td><td>E-4</td><td>9</td><td>DK / Light Worsted</td></tr>
+                <tr><td>4.00 mm</td><td>G-6</td><td>8</td><td>Worsted / Aran (Most popular)</td></tr>
+                <tr><td>4.50 mm</td><td>7</td><td>7</td><td>Worsted</td></tr>
+                <tr><td>5.00 mm</td><td>H-8</td><td>6</td><td>Worsted / Heavy Aran</td></tr>
+                <tr><td>5.50 mm</td><td>I-9</td><td>5</td><td>Chunky / Bulky</td></tr>
+                <tr><td>6.00 mm</td><td>J-10</td><td>4</td><td>Bulky</td></tr>
+                <tr><td>6.50 mm</td><td>K-10.5</td><td>3</td><td>Super Bulky</td></tr>
+                <tr><td>8.00 mm</td><td>L-11</td><td>0</td><td>Super Bulky / Chenille Plushies</td></tr>
+                <tr><td>10.00 mm</td><td>N/P-15</td><td>000</td><td>Jumbo Blankets</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Standard Yarn Weights -->
+        <div class="card glass-card">
+          <h3>🧶 Yarn Weight Standard Classifications</h3>
+          <div class="table-responsive">
+            <table class="reference-table">
+              <thead>
+                <tr>
+                  <th>Standard No.</th>
+                  <th>Classification</th>
+                  <th>Common Project Uses</th>
+                  <th>Recommended Hook</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>#0</td><td>Lace / Thread</td><td>Doilies, lace shawls, micro-crochet</td><td>1.6 – 2.25 mm</td></tr>
+                <tr><td>#1</td><td>Super Fine / Fingering</td><td>Socks, delicate baby wear</td><td>2.25 – 3.25 mm</td></tr>
+                <tr><td>#2</td><td>Fine / Sport</td><td>Light cardigans, baby blankets</td><td>3.25 – 3.75 mm</td></tr>
+                <tr><td>#3</td><td>Light / DK (Double Knit)</td><td>Light sweaters, amigurumi, beanies</td><td>3.75 – 4.5 mm</td></tr>
+                <tr><td>#4</td><td>Medium / Worsted / Aran</td><td>Blankets, hats, cardigans, plushies</td><td>4.5 – 5.5 mm</td></tr>
+                <tr><td>#5</td><td>Bulky / Chunky</td><td>Cozy scarves, thick rugs, winter beanies</td><td>5.5 – 8.0 mm</td></tr>
+                <tr><td>#6</td><td>Super Bulky</td><td>Quick arm knits, thick amigurumi</td><td>8.0 – 11.0 mm</td></tr>
+                <tr><td>#7</td><td>Jumbo / Chenille</td><td>Giant plushies, chunky finger blankets</td><td>15 mm & above</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- The Golden Pricing Formula Card -->
+        <div class="card glass-card golden-formula-card">
+          <h3>⭐ The Craft Industry's Golden Pricing Formula</h3>
+          <p>Many beginner crocheteers use only <em>"Cost of Materials × 3"</em>. This works for simple goods, but drastically underpays for intricate crochet requiring 10-20 hours! Here is the industry standard formula:</p>
+          <div class="formula-box">
+            <code>Total Cost = (Yarn Cost) + (Notions/Hardware) + (Hours × Hourly Wage) + (Packaging + Overhead)</code>
+            <br><br>
+            <code>Wholesale Price = Total Cost × 1.5 to 2.0</code>
+            <br><br>
+            <code>Retail Price = Total Cost + Desired Profit Margin  (Or Wholesale × 2 for boutique craft)</code>
+          </div>
+          <p class="formula-note">✨ <em>Remember: A machine cannot crochet. Every single crochet stitch must be made by human hands. Value your craftsmanship!</em></p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CLIENT QUOTE CARD MODAL (Print / Copy for Instagram & WhatsApp) -->
+  <div id="quoteModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+    <div class="modal-card modal-quote">
+      <button class="modal-close" id="quoteModalClose" aria-label="Close quote modal">✕</button>
+
+      <div class="quote-card-sheet" id="quoteCardPrintArea">
+        <div class="quote-header">
+          <div class="quote-brand">
+            <span class="quote-logo-mark">🧶</span>
+            <div>
+              <h3>Handmade Crochet Quote</h3>
+              <p class="quote-subline">Crafted with care, stitch by stitch</p>
+            </div>
+          </div>
+          <div class="quote-date" id="quoteCardDate">Sep 23, 2026</div>
+        </div>
+
+        <div class="quote-item-summary">
+          <span class="quote-item-label">ITEM / PROJECT</span>
+          <h2 class="quote-item-name" id="quoteCardProjectName">Mushroom Frog Plushie</h2>
+          <div class="quote-client-row" id="quoteCardClientRow">
+            Prepared for: <strong id="quoteCardClientName">Valued Customer</strong>
+          </div>
+        </div>
+
+        <div class="quote-table-wrap">
+          <table class="quote-table">
+            <tbody>
+              <tr>
+                <td>Handmade Crafting & Materials</td>
+                <td class="text-right" id="quoteCardMaterials">₹240.00</td>
+              </tr>
+              <tr>
+                <td>Artisan Handwork & Assembly</td>
+                <td class="text-right" id="quoteCardLabor">₹300.00</td>
+              </tr>
+              <tr>
+                <td>Packaging & Presentation</td>
+                <td class="text-right" id="quoteCardPackaging">₹45.00</td>
+              </tr>
+              <tr class="quote-total-row">
+                <td><strong>Final Estimated Price</strong></td>
+                <td class="text-right"><strong id="quoteCardTotal">₹754.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="quote-footer-notes">
+          <p>✨ <em>Custom handmade orders require 3–7 business days to craft with love. Thank you for supporting independent handmade art!</em></p>
+        </div>
+      </div>
+
+      <div class="modal-quote-actions">
+        <button id="copyQuoteMsgBtn" class="btn-primary">
+          📋 Copy Text for WhatsApp / DM
+        </button>
+        <button id="printQuoteBtn" class="btn-outline">
+          🖨️ Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <strong>StitchCraft</strong> — Created for the global crochet artisan community.
+        <div class="footer-sub">Built with love by <strong>Bhavya Agarwal</strong></div>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Bhavya121013/Crochet-Website" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="#calculator" onclick="switchTab('tools')">Hook Guide</a>
+        <a href="#android" id="footerInstallLink">Install Android App</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
